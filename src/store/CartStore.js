@@ -15,12 +15,27 @@ export const useCartStore = defineStore("CartStore", {
         return item.quantity + sum;
       }, 0);
     },
+
+    productsGroups() {
+      const productsGroups = {};
+
+      this.items.forEach((item, index) => {
+        productsGroups[item.product] || (productsGroups[item.product] = []);
+        productsGroups[item.product].push({ ...item, index });
+      });
+
+      return productsGroups;
+    },
   },
 
   actions: {
     addItem(item) {
       this.items.push(item);
       window.localStorage.setItem("cart-items", JSON.stringify(this.items));
+    },
+
+    removeItem(index) {
+      this.items.splice(index, 1);
     },
   },
 });
