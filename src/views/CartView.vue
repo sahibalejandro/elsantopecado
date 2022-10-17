@@ -12,9 +12,14 @@ function placeOrder() {
 
 <template>
   <div class="grid gap-8">
+    <div v-if="cartStore.items.length === 0" class="grid h-32 place-content-center">
+      No hay productos en tu carrito. 🫠
+    </div>
+
     <section v-for="groupName in Object.keys(cartStore.productsGroups)">
       <h2 class="text-2xl font-bold">{{ groupName }}</h2>
       <div class="grid gap-4">
+
         <div v-for="item in cartStore.productsGroups[groupName]">
           <div class="flex justify-between items-center">
             <h3 class="text-xl font-bold">{{ item.name }} x{{ item.quantity }}</h3>

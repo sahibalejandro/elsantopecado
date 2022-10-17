@@ -1,18 +1,41 @@
 import { defineStore } from "pinia";
 
-const STORE_NAME = "cart-items";
+const STORE_NAME = "elsantopecado-cart";
+const ONE_HOUR = 60 * 60 * 1000;
 
 function persist(state) {
-  window.localStorage.setItem(STORE_NAME, JSON.stringify(state.items));
+  // Update the cart expiration time every time it is persisted.
+  state.expires = Date.now() + ONE_HOUR;
+
+  // Make sure the properties persisted here match the properties
+  // defined in the store's state, see below.
+  window.localStorage.setItem(STORE_NAME, JSON.stringify({
+    items: state.items,
+    expires: state.expires,
+  }));
 }
 
 export const useCartStore = defineStore("CartStore", {
   state() {
-    const itemsJSON = window.localStorage.getItem(STORE_NAME);
-
-    return {
-      items: itemsJSON !== null ? JSON.parse(itemsJSON) : [],
+    // If you add or remove properties from defaultState make sure to update
+    // the persist() function so it persist the available properties.
+    const defaultState = {
+      items: [],
+      expires: Date.now() + ONE_HOUR,
     };
+
+    const localDataJSON = window.localStorage.getItem(STORE_NAME);
+    if (localDataJSON === null) {
+      return defaultState;
+    }
+
+    // If current persisted cart is expired just return the default state.
+    const localData = JSON.parse(localDataJSON);
+    if (localData.expires <= Date.now()) {
+      return defaultState;
+    }
+
+    return localData;
   },
 
   getters: {
@@ -41,11 +64,18 @@ export const useCartStore = defineStore("CartStore", {
   },
 
   actions: {
+    /**
+     * Add a new item to the cart and persist the state.
+     */
     addItem(item) {
       this.items.push(item);
       persist(this);
     },
 
+    /**
+     * Remove an item from the cart's items list with the given index.
+     * Persist the data.
+     */
     removeItem(index) {
       this.items.splice(index, 1);
       persist(this);
