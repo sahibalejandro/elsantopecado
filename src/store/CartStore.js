@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 
+import { itemTotal } from '@/utils';
+
 const STORE_NAME = "elsantopecado-cart";
 const ONE_HOUR = 60 * 60 * 1000;
 
@@ -43,9 +45,15 @@ export const useCartStore = defineStore("CartStore", {
      * Returns the total number of items.
      */
     itemsCount() {
-      return this.items.reduce((sum, item) => {
-        return item.quantity + sum;
-      }, 0);
+      return this.items.reduce((count, item) => item.quantity + count, 0);
+    },
+
+    total() {
+      return this.items.reduce((amount, item) => amount + itemTotal(item), 0);
+    },
+
+    isEmpty() {
+      return this.items.length === 0;
     },
 
     /**
