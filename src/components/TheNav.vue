@@ -1,11 +1,11 @@
 <script setup>
-import TheReturn from './TheReturn.vue';
+import { RouterLink } from 'vue-router';
 import TheCart from './TheCart.vue';
 </script>
 
 <template>
   <section class="flex justify-between px-4">
-    <TheReturn />
+    <RouterLink to="/">Menú</RouterLink>
     <TheCart />
   </section>
 </template>

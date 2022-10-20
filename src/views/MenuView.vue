@@ -4,7 +4,8 @@ import products from "@/store/products.js";
 </script>
 
 <template>
-  <section class="grid gap-4">
+  <h2 class="text-center text-xl font-bold mt-8">Santo Pecado Menú</h2>
+  <section class="grid gap-4 mt-4">
     <Product v-for="product in products" v-bind="product" />
   </section>
 </template>

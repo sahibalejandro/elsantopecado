@@ -9,7 +9,7 @@ defineProps({
 </script>
 
 <template>
-  <h2 class="text-2xl font-bold"> {{ name }} </h2>
+  <h2 class="text-xl font-bold"> {{ name }} </h2>
   <RouterLink v-for="(type, index) in types" :to="`/product/${id}/${index}`">
     {{ type.name }}
   </RouterLink>
