@@ -1,5 +1,5 @@
 <script setup>
-import { currency } from '@/utils';
+import { currency, itemTotal } from '@/utils';
 import { useCartStore } from "@/store/CartStore";
 
 const cartStore = useCartStore();
